@@ -8,6 +8,7 @@ import static Constants.Constants.N_882_2_OVER_4_TIMES_256;
 import static Constants.Constants.N_MINUS_1;
 
 import java.util.concurrent.RecursiveTask;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apfloat.Apint;
 import org.apfloat.ApintMath;
@@ -15,29 +16,50 @@ import org.apfloat.ApintMath;
 public class PiCalcTask extends RecursiveTask<Apint[]> {
    private long from, to;
    private static long quanta;
+   private boolean verbose;
+   private static AtomicInteger threadNumber = new AtomicInteger(0);
+   private int threadId;
 
    public static void setQuanta(long q) {
       quanta = q;
    }
 
-   public PiCalcTask(long from, long to) {
+   private static int getThreadNumber() {
+      int threadId = threadNumber.getAndIncrement();
+      return threadId;
+   }
+
+   public PiCalcTask(long from, long to, boolean verbose) {
       this.from = from;
       this.to = to;
+      this.verbose = verbose;
+      this.threadId = PiCalcTask.getThreadNumber();
    }
 
    @Override
    protected Apint[] compute() {
+      if (verbose) {
+         System.out.printf("Started task #%d\n", this.threadId);
+      }
+      long time = System.currentTimeMillis();
       if (to - from <= quanta) {
          return binarySplit(from, to);
       } else {
          long mid = from + (to - from) / 2;
-         PiCalcTask left = new PiCalcTask(from, mid);
-         PiCalcTask right = new PiCalcTask(mid, to);
+         PiCalcTask left = new PiCalcTask(from, mid, verbose);
+         PiCalcTask right = new PiCalcTask(mid, to, verbose);
          left.fork();
          right.fork();
          Apint[] rightAns = right.join();
          Apint[] leftAns = left.join();
-         return merge(rightAns, leftAns);
+         try {
+            return merge(rightAns, leftAns);
+         } finally {
+            if (verbose) {
+               System.out.printf("Task #%d finished in #%d ms\n", this.threadId,
+                     (System.currentTimeMillis() - time));
+            }
+         }
       }
    }
 

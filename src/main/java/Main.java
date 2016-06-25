@@ -24,11 +24,15 @@ public class Main {
       if (!benchmark) {
          PiCalculator calc = new PiCalculator(precision, threads, verbose);
          long time = System.currentTimeMillis();
-         Pi pi = calc.calcPiAlternative();
+         Pi pi = calc.calculatePi();
          System.out.printf("Calculated pi to %d digits on %d threads in %d ms\n",
                precision, threads, (System.currentTimeMillis() - time));
+
+         PiWriter writer = new PiWriter(outputFile, pi);
+         writer.write();
+         System.out.println("Wrote pi to file!");
       } else {
-         Benchmark.start(precision, verbose);
+         Benchmark.start(precision);
       }
 
    }
