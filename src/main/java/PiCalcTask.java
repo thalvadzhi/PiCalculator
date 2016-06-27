@@ -14,6 +14,7 @@ import org.apfloat.Apint;
 import org.apfloat.ApintMath;
 
 public class PiCalcTask extends RecursiveTask<Apint[]> {
+   private static final long serialVersionUID = 1L;
    private long from, to;
    private static long quanta;
    private boolean verbose;

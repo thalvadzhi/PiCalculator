@@ -1,6 +1,7 @@
-import java.io.DataOutputStream;
-import java.io.FileOutputStream;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 public class PiWriter {
    private String outputFileName;
@@ -12,10 +13,14 @@ public class PiWriter {
    }
 
    public void write() {
-      try (DataOutputStream writer =
-            new DataOutputStream(new FileOutputStream(outputFileName))) {
+      try (FileWriter writer =
+            new FileWriter(new File(outputFileName));
+           PrintWriter output = new PrintWriter(writer)) {
 
-         writer.writeUTF(pi.getPiString());
+         output.print(pi.getPiString());
+         output.flush();
+         writer.flush();
+
       } catch (IOException e) {
          throw new RuntimeException(e);
       }

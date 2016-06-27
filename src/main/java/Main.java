@@ -3,6 +3,7 @@ import static Constants.Constants.CLI_OUTPUT_FILE;
 import static Constants.Constants.CLI_PRECISION;
 import static Constants.Constants.CLI_THREAD_COUNT;
 import static Constants.Constants.CLI_VERBOSE;
+import static Constants.Constants.OUTPUT_FILE;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -14,13 +15,12 @@ import org.apache.commons.cli.ParseException;
 public class Main {
    public static long precision = 1000000;
    public static int threads = 8;
-   public static boolean verbose = false;
-   public static String outputFile = "pi-ramanujan.txt";
+   public static boolean verbose = true;
+   public static String outputFile = OUTPUT_FILE;
    public static boolean benchmark = false;
 
    public static void main(String[] args) {
       parseCommandLineInput(args);
-
       if (!benchmark) {
          PiCalculator calc = new PiCalculator(precision, threads, verbose);
          long time = System.currentTimeMillis();
@@ -67,9 +67,9 @@ public class Main {
       }
 
       if (cmd.hasOption(CLI_VERBOSE)) {
-         verbose = true;
-      } else {
          verbose = false;
+      } else {
+         verbose = true;
       }
 
       if (cmd.hasOption(CLI_OUTPUT_FILE)) {
@@ -101,7 +101,7 @@ public class Main {
             "determine whether to print thread information or not")
             .addOption(CLI_THREAD_COUNT, true, "number of threads to calculate pi on")
             .addOption(CLI_PRECISION, true, "number of digits of pi to calculate")
-            .addOption(CLI_OUTPUT_FILE, false, "the file to output the calculated pi to")
+            .addOption(CLI_OUTPUT_FILE, true, "the file to output the calculated pi to")
             .addOption(CLI_BENCHMARK, false, "whether to run a benchmark or not");
 
       return options;

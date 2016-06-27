@@ -3,7 +3,6 @@ import static Constants.Constants.N_10;
 import static Constants.Constants.N_3528;
 import static Constants.Constants.QUANTA;
 
-import java.util.ArrayList;
 import java.util.concurrent.ForkJoinPool;
 
 import org.apfloat.Apint;
@@ -11,7 +10,6 @@ import org.apfloat.ApintMath;
 
 public class PiCalculator {
    private long precision;
-   private ArrayList<Apint[]> pqts;
    private long numberOfThreads;
    private long numberOfTerms;
    private Apint precisionActual;
@@ -24,7 +22,6 @@ public class PiCalculator {
       } else {
          this.numberOfThreads = threads;
       }
-      this.pqts = new ArrayList<>();
       this.verbose = verbose;
       this.precisionActual = ApintMath.pow(N_10, this.precision);
       this.numberOfTerms = (long) (this.precision / DIGITS_PER_TERM) + 1;
@@ -35,6 +32,10 @@ public class PiCalculator {
       if (this.numberOfTerms <= QUANTA / 2) {
          quanta = this.numberOfTerms / (2 * this.numberOfThreads);
       } else {
+         quanta = QUANTA;
+      }
+
+      if (quanta == 0) {
          quanta = QUANTA;
       }
       PiCalcTask.setQuanta(quanta);

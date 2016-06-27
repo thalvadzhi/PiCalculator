@@ -3,7 +3,6 @@ public class Benchmark {
    public static void start(long precision) {
       int processors = Runtime.getRuntime().availableProcessors();
       long oneThread = 1;
-      long[] times = new long[processors];
       System.out.printf("Starting benchmark for %d digits!\n", precision);
       for (int i = 1; i <= 2 * processors; i++) {
          PiCalculator calc = new PiCalculator(precision, i, false);

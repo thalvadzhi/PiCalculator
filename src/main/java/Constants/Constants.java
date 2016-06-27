@@ -18,11 +18,12 @@ public class Constants {
    public static Apint N_882_2_OVER_4_TIMES_256 = new Apint(49787136);
    public static double DIGITS_PER_TERM = 5.87;
    public static int QUANTA = 1000;
+   public static String OUTPUT_FILE = "pi-ramanujan.txt";
 
 
    public static String CLI_THREAD_COUNT = "t";
    public static String CLI_PRECISION = "p";
-   public static String CLI_VERBOSE = "v";
+   public static String CLI_VERBOSE = "q";
    public static String CLI_OUTPUT_FILE = "o";
    public static String CLI_BENCHMARK = "b";
 }
